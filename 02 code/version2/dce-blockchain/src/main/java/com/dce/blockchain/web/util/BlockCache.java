@@ -43,8 +43,8 @@ public class BlockCache {
 	/**
 	 * 要连接的节点地址
 	 */
-	@Value("${block.address}")
-	private String address;
+	@Value("#{'${block.address}'.split(',')}")
+	private List<String> addressList;
 	
 	/**
 	 * 获取最新的区块，即当前链上最后一个区块
@@ -95,12 +95,12 @@ public class BlockCache {
 		this.p2pport = p2pport;
 	}
 
-	public String getAddress() {
-		return address;
+	public List<String> getAddressList() {
+		return addressList;
 	}
 
-	public void setAddress(String address) {
-		this.address = address;
+	public void setAddressList(List<String> addressList) {
+		this.addressList = addressList;
 	}
 
 }

@@ -6,11 +6,6 @@
       "sourceType": "com.dce.blockchain.web.service.PowService"
     },
     {
-      "name": "address",
-      "type": "com.dce.blockchain.web.service.BlockService",
-      "sourceType": "com.dce.blockchain.web.service.BlockService"
-    },
-    {
       "name": "block",
       "type": "com.dce.blockchain.web.util.BlockCache",
       "sourceType": "com.dce.blockchain.web.util.BlockCache"
@@ -18,8 +13,8 @@
   ],
   "properties": [
     {
-      "name": "block.address",
-      "type": "java.lang.String",
+      "name": "block.address-list",
+      "type": "java.util.List<java.lang.String>",
       "description": "要连接的节点地址",
       "sourceType": "com.dce.blockchain.web.util.BlockCache"
     },

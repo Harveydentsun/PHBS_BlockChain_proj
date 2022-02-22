@@ -98,7 +98,8 @@ public class PowService {
 		msg.setType(BlockConstant.RESPONSE_LATEST_BLOCK);
 		msg.setData(JSON.toJSONString(block));
 		p2PService.broatcast(JSON.toJSONString(msg));
-		
+
+		blockCache.getBlockChain().add(block);
 		return block;
 	}
 	

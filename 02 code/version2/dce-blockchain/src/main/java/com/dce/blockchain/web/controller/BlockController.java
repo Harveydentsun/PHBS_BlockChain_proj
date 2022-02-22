@@ -37,7 +37,7 @@ public class BlockController {
 	}
 	
 	/**
-	 * 查看当前节点区块链数据
+	 * 查看当前节点最新区块数据
 	 * @return
 	 */
 	@GetMapping("/data")
@@ -65,6 +65,20 @@ public class BlockController {
 	@ResponseBody
 	public String createNewBlock() throws UnsupportedEncodingException {
 		powService.mine();
+		return JSON.toJSONString(blockCache.getBlockChain());
+	}
+
+	/**
+	 * 工作量证明PoW
+	 * 挖矿生成新的区块
+	 */
+	@GetMapping("/mining")
+	@ResponseBody
+	public String createNewBlocks() throws UnsupportedEncodingException {
+		long startTime = System.currentTimeMillis();
+		while (System.currentTimeMillis() - startTime <= 10000) {
+			powService.mine();
+		}
 		return JSON.toJSONString(blockCache.getBlockChain());
 	}
 }

@@ -18,3 +18,27 @@ block chain目前是在blockCache里面，以list的形式存储，要不要改�
 
 把hwk2的关于这一块的code再搬过来
 
+
+# 2021/07/04
+
+## 孙博
+
+### BlockService
+
+有genesisBlock后不能再create
+
+现在create genesisBlock后也会broadcast
+
+### BlockCache
+
+可以连接多个client address，再application中用逗号分隔
+
+### BlockHandler
+
+可以用/mining让节点连续挖矿（持续20秒）
+
+### 正在加入selfish mining函数
+
+
+
+

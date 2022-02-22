@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.dce.blockchain.web.model.Message;
+import com.dce.blockchain.web.util.BlockConstant;
 import com.dce.blockchain.web.util.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,13 +29,15 @@ import com.dce.blockchain.web.util.CryptoUtil;
  * @author Jared Jia
  *
  */
-@ConfigurationProperties(prefix = "address")
 @Service
 public class BlockService {
 
 	public static final double COINBASE = 25;
 	@Autowired
 	BlockCache blockCache;
+
+	@Autowired
+	P2PService p2PService;
 
 	@Value("${address.genesisadd}")
 	public String genesisAddress;
@@ -45,6 +49,10 @@ public class BlockService {
 	 * @return
 	 */
 	public String createGenesisBlock() throws UnsupportedEncodingException {
+
+		if (blockCache.getLatestBlock() != null) {
+			return "Already Have GenesisBlock!";
+		}
 
 		System.out.println("keyPairGenesis");
 		//TODO: 把下面的换成coinBaseTxs之类的
@@ -76,6 +84,12 @@ public class BlockService {
 		//添加到已打包保存的业务数据集合中
 		blockCache.getPackedTransactions().addAll(genesisBlock.getTransactions());
 		System.out.println("getPackedTransactions");
+
+		//创建成功后，全网广播出去
+		Message msg = new Message();
+		msg.setType(BlockConstant.RESPONSE_LATEST_BLOCK);
+		msg.setData(JSON.toJSONString(genesisBlock));
+		p2PService.broatcast(JSON.toJSONString(msg));
 
 		//添加到区块链中
 		blockCache.getBlockChain().add(genesisBlock);
@@ -171,7 +185,8 @@ public class BlockService {
 	 * @return
 	 */
 	public boolean isValidHash(String hashStr) {
-		return hashStr.startsWith("0000");
+		String startStr = String.format("%0" + blockCache.getDifficulty() + "d", 0);
+		return hashStr.startsWith(startStr);
 	}
 	
 	/**

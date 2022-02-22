@@ -239,11 +239,13 @@ public class P2PService implements ApplicationRunner {
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
 		p2PServer.initP2PServer(blockCache.getP2pport());
-		p2PClient.connectToPeer(blockCache.getAddress());
 		System.out.println("*****难度系数******"+blockCache.getDifficulty());
 		System.out.println("*****端口号******"+blockCache.getP2pport());
-		System.out.println("*****节点地址******"+blockCache.getAddress());
-		
+		for (String Address : blockCache.getAddressList()) {
+			p2PClient.connectToPeer(Address);
+			System.out.println("*****节点地址******"+Address);
+		}
+
 	}
 	
 }
